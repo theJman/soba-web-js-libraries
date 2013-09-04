@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Class playground</title>
+	<style type="text/css">
+		#accounts p {
+			margin: 0;
+		}
+		#accounts .account {
+			margin: 20px 0;
+		}
+	</style>
+</head>
+<body>
+
+	<h3>Review Source File</h3>
+	<p>Run in the browser and check the console</p>
+
+	<p><a href="#">Click me</a></p>
+
+	<!-- Example account, we want our accounts to look like this -->
+
+	<div id="accounts">
+		<div class="account">
+			<p>Name: John Doe</p>
+			<p>Type: Checking</p>
+			<p>Balance: $2300</p>
+		</div>
+	</div>
+
+	<!-- JavaScript we need -->
+
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore-min.js"></script>
+	<script type="text/javascript" src="js/data.js"></script>
+
+	<!-- Template 1: staightforward -->
+
+	<script type="text/template" id="account-template">
+		<div class="account">
+			<p>Name: <%= name %></p>
+			<p>Type: <%= type %></p>
+			<p>Balance: $<%= balance %></p>
+		</div>
+	</script>
+
+	<!-- Template 2: with embedded logic. Ugly -->
+
+	<script type="text/template" id="account-template-if">
+		<div class="account">
+			<p>Name: <%= name %></p>
+			<p>Type: <% if (type==0) { %> 
+				Checking
+			<% } else { %> 
+				Savings
+			<% } %></p>
+			<p>Balance: $<%= balance %></p>
+		</div>
+	</script>
+
+	<!-- Template 3: using a helper function. Yay -->
+
+	<script type="text/template" id="account-template-function">
+		<div class="account">
+			<p>Name: <%= name %></p>
+			<p>Type: <%= typeDescription() %></p>
+			<p>Balance: $<%= balance %></p>
+		</div>
+	</script>
+
+	<!-- The Application -->
+
+	<script type="text/javascript">
+
+		// Creating basic elements.
+
+		var htmlDiv = $( document.createElement('div') );
+		$('#accounts').append(htmlDiv);
+
+		var jDiv = $("<div>");
+		$('#accounts').append(jDiv);
+
+		var kDiv = $("<div></div>");
+		$('#accounts').append(kDiv);
+
+		var qDiv = $("<div>", {
+			"class": "account",
+			id: 1
+		});
+
+		// Now how do we get our variable content into the html?
+
+		var account = {
+			name: "Mix Master P",
+			type: "Checking",
+			balance: 4500
+		}
+
+		// We could do it as one big messy string
+
+		var html = "<div class='account'> <p>Name: " + account.name 
+			+ "</p> <p>Type: " + account.type 
+			+ "</p> <p>Balance: $" + account.balance + "</p> </div>";
+
+		var hDiv = $(html);
+		$('#accounts').append(hDiv);
+
+		// Obviously not ideal
+
+		// We could create a p for each element and append it to one of the divs?
+		// Yes, except we need to append all these strings together
+
+		qDiv.append( $("<div>", { text: "Name: " + account.name }) );
+		qDiv.append( $("<div>", { text: "Type: " + account.type }) );
+		qDiv.append( $("<div>", { text: "Balance: $" + account.balance }) );
+
+		$('#accounts').append(qDiv);
+
+		// Better
+		// But now we have 'spaghetti' code: JavaScript mixed with html mixed with css
+		// Code like this is not maintainable for a large project. We need a better solution
+
+		// What is our best solution? Templates
+
+		// We will put our templates inside a special script tag whose type is 'text/template'
+		// This causes the browser to skip over executing anything in it. Then we can
+		// get the html inside the script tag using jQuery!
+
+		// We can insert variables using the <%= ... => syntax
+		// And we can execute javascript using <% ... %>
+
+		// Generally you want to keep your template JavaScript to a minimum. Keep most
+		// of your logic in the javascript proper.
+
+		var htmlTemplate = $('#account-template').html();
+		var tDiv = _.template(htmlTemplate, accounts[0]);
+		$('#accounts').append(tDiv);
+
+		// When we want to use our own accounts information, we need to translate 
+		// the account type from a 0 or 1 to a text label
+		
+		// We can include logic in the template, but you see it gets out of hand quickly
+		// We have to escape in and out of the javascript
+
+		// Best that we include a utility function on the object for converting the type
+		// to a text description and call it from the template
+
+		var acc = _.clone(accounts[0]);
+		var helpers = {
+			typeDescription: function() {
+				return this.type == 0 ? "Checking" : "Savings";
+			};
+
+		_.extend(acc, helpers});
+
+		var htmlTemplate2 = $('#account-template-function').html();
+		var sDiv = _.template(htmlTemplate2, acc);
+		$('#accounts').append(sDiv);
+
+		// What we've done here is created a view helper which includes the typeDescription
+		// function, extended our data object to include the helper, and then called the
+		// helper from the template. We've moved the logic out of the html back into JavaScript,
+		// which is a Good Thing.
+
+
+		// Finally, you could imagine using Underscore's each function to traverse
+		// a list, create the html for each element from the one template variable,
+		// and inject it into the page. How many lines of code do you think this is?
+
+		// You'll find out in the homework.
+
+		// Or you could filter a list, map it to translate some of the data, then iterate
+		// over the result with each, again injecting html into the page using the template
+		// Turns out you can accomplish powerful data transformation and DOM modification
+		// with just a few lines of code.
+
+	</script>
+
+</body>
+</html>

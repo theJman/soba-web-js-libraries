@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Class playground</title>
+
+	<style type="text/css">
+		#accounts p {
+			margin: 0;
+		}
+		#accounts .account {
+			margin: 20px 0;
+		}
+
+		.a {
+			background-color: red;
+		}
+
+		.b {
+			background-color: blue;
+		}
+
+		.bold {
+			font-weight: bold;
+		}
+
+		.container {
+			padding: 10px;
+			border: 1px dotted black;
+		}
+
+	</style>
+
+	
+<body>
+
+	<h3>Review Source File</h3>
+	<p>Run in the browser and check the console</p>
+
+	<div class="container">
+		<a href="" id="alink">Click me!</a>
+
+		<p>Some text</p>
+		<p>Here's some more text</p>
+		<p>It really doesn't matter</p>
+	</div>
+
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore-min.js"></script>
+	<script type="text/javascript" src="js/data.js"></script>
+
+	<script type="text/javascript">
+		
+		var ordered = _.sortBy(accounts, function(account) {
+			return account.balance;
+		});
+
+		console.log(ordered.reverse());
+
+	</script>
+
+	<script type="text/javascript">
+
+
+
+	</script>
+
+</body>
+</html>
