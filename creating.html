@@ -149,9 +149,10 @@
 		var helpers = {
 			typeDescription: function() {
 				return this.type == 0 ? "Checking" : "Savings";
-			};
+			}
+		};
 
-		_.extend(acc, helpers});
+		_.extend(acc, helpers);
 
 		var htmlTemplate2 = $('#account-template-function').html();
 		var sDiv = _.template(htmlTemplate2, acc);
