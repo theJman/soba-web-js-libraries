@@ -9,9 +9,9 @@ For this lesson you will be transforming data with [underscore.js](http://unders
 
 #### Instructions
 
-Again, make sure you fork this repository to your own account and clone it like you did for the first two assignment.
+Again, make sure you fork this repository to your own account and clone it like you did for previous assignments.
 
-Keep up the habit of branching in git, making your changes, and then merging back into your main branch. As in Assignment 4, instead of branching from main, create a "development" branch first immediately after you clone the repository, and branch from this line when you edit the individual files.
+Keep up the habit of branching in git, making your changes, and then merging back into your main branch. As in Assignment 4, instead of branching from main, create a "development" branch immediately after you clone the repository, and branch from this line when you edit the individual files.
 
 #### Editing the files
 
@@ -42,4 +42,12 @@ You will find the following assignments in index.html. Use the dataset provided 
 8. Use underscore to create a new list of people. The list should be based on the original list, except for now, everybody is twice as old as they were before, and if they are older than 70, do not include them in the resulting list. Everything else remains the same.
 
 9. Use underscore to iterate through the list. Use underscore templating to create a div for each person. In the div, add a paragraph for all of the attributes except firstName and lastName. For firstName and lastName, create a single paragraph for 'Name'. Define a helper function that creates the full name from the first and last names and use it in the template. Create a helper function to translate the sex attribute into text: 0 = 'Male', 1 = 'Female' and use it in the template. Be sure to extend each of the objects with your helper function! Use jQuery to inject the resulting html into the page.
+
+#### Additional Free Form Assignment
+
+Now that you are familiar with JavaScript, DOM manipulation and jQuery, you should be able to understand the [Twitter Bootstrap JavaScript](http://getbootstrap.com/javascript/).
+
+Review the documentation and try to implement some of the functionality on a page of your design. Of particular utility are the Dropdown, Alert and Modal components. 
+
+Use Twitter Bootstrap to style your page.
 

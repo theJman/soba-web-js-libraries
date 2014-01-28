@@ -4,28 +4,17 @@
 	<title>Class playground</title>
 
 	<style type="text/css">
-		#accounts p {
-			margin: 0;
-		}
-		#accounts .account {
-			margin: 20px 0;
-		}
+		
 
-		.a {
-			background-color: red;
-		}
-
-		.b {
-			background-color: blue;
-		}
-
-		.bold {
-			font-weight: bold;
-		}
-
-		.container {
-			padding: 10px;
+		.person {
 			border: 1px dotted black;
+			margin: 10px;
+			padding: 10px;
+		}
+
+		.person p {
+			margin:0;
+			padding:0;
 		}
 
 	</style>
@@ -37,24 +26,76 @@
 	<p>Run in the browser and check the console</p>
 
 	<div class="container">
-		<a href="" id="alink">Click me!</a>
-
-		<p>Some text</p>
-		<p>Here's some more text</p>
-		<p>It really doesn't matter</p>
+		<div id="people">
+			<!-- I want to create this -->
+			<div class="person">
+				<p>Name: John Doe</p>
+				<p>Account: Checking</p>
+				<p>Balance: $5622</p>
+			</div>
+		</div>
 	</div>
 
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore-min.js"></script>
 	<script type="text/javascript" src="js/data.js"></script>
 
+	<script type="text/template" id="person-template">
+		<div class="person">
+			<p>Name: <%= name %> </p>
+			<p>Account: <%= accountDescription() %> </p>
+			<p>Balance: $<%= balance %></p>
+		</div>
+	</script>
+
 	<script type="text/javascript">
 		
-		var ordered = _.sortBy(accounts, function(account) {
-			return account.balance;
+		var account = accounts[0];
+		console.log(account);
+
+		// big honing html string
+
+		var aPerson = "<div class='person'>" + 
+			"<p>Name: " + account.name + "</p>" +
+			"<p>Account: " + account.type + "</p>" +
+			"<p>Balance: $" + account.balance + "</p>" +
+			"</div>";
+
+		$('#people').append(aPerson);
+
+		// element by element
+
+		var qDiv = $("<div>", {
+			"class": "person",
+			id: 1
 		});
 
-		console.log(ordered.reverse());
+		qDiv.append( $("<div>", { text: "Name: " + account.name }) );
+		qDiv.append( $("<div>", { text: "Type: " + account.type }) );
+		qDiv.append( $("<div>", { text: "Balance: $" + account.balance }) );
+
+		$('#people').append(qDiv);
+
+		var account2 = accounts[1];
+
+
+		var PersonTempate = $('#person-template').html();
+
+		//var account2html = _.template(PersonTempate, account2);
+		//$('#people').append(account2html);
+
+		var helpers = {
+			accountDescription: function() {
+				return this.type == 0 ? "checking" : "savings";
+			}
+		}
+
+		_.extend(account2, helpers);
+
+		console.log(account2.accountDescription());
+
+		var account2html = _.template(PersonTempate, account2);
+		$('#people').append(account2html);
 
 	</script>
 
