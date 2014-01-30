@@ -15,7 +15,9 @@
 	<script type="text/javascript" src="js/people.js"></script>
 
 	<!-- Templates go here or above the libraries -->
+	<div id="page">
 
+	</div>
 
 	<!-- Application javascript -->
 
@@ -27,39 +29,117 @@
 
 		// 1. Use underscore to find the oldest person. 
 		//		Use jQuery to inject their full name into the page, e.g. 'Oldest peron: x'
+		var indexOfOldest = 0;
+		var counter = 0;
+		_.each(people,function (arg){
+			if(people[indexOfOldest].age < people[counter].age){
+				indexOfOldest = counter;
+			}
+			counter++;
+		});
+		var oldestPerson = people[indexOfOldest];
+		$('#page').append('<p>Oldest Person: '+oldestPerson.firstName+' '+oldestPerson.lastName+'</p>');
+
 
 		
 		// 2. Use underscore to find the youngest person
 		//		Use jQuery to inject their full name into the page, e.g. 'Youngest peron: x'
-
+		var youngestPerson = people[0];
+		_.each(people,function(arg){
+			if(youngestPerson.age > arg.age)
+				youngestPerson = arg;
+		});
+		$('#page').append('<p>Youngest Person: '+youngestPerson.firstName+' '+youngestPerson.lastName+'</p>');
 
 		// 3. Use underscore to find the most common hair color
 		//		Use jQuery to inject it into the page, e.g. 'Most common hair color: x'
-
+		var brownHair = _.filter(people,function(arg){
+			return _.isEqual(arg.hair, "brown");
+		});
+		var blackHair = _.filter(people, function(arg){
+			return _.isEqual(arg.hair,"black");
+		});
+		var blondeHair = _.filter(people, function(arg){
+			return _.isEqual(arg.hair,"blonde");
+		});
+		var mostPopHair;
+		if(brownHair.length > blondeHair.length){
+			if(brownHair.length > blackHair.length){
+				mostPopHair = "brown";
+			}
+			else{
+				mostPopHair = "black";
+			}
+		}
+		else{
+			if (blondeHair.length > blackHair.length) {
+				mostPopHair = "blonde";
+			}
+			else{
+				mostPopHair = "black";
+			}
+		}
+		$('#page').append('<p>Most common hair color: ' + mostPopHair + '</p>');
 
 		// 4. Use underscore to find the most common music preference
 		//		Use jQuery to inject it into the page, e.g. 'Most popular music: x'
+		var countryMus = _.filter(people,function(arg){
+			return _.isEqual(arg.music, "country");
+		});
+		var rockMus = _.filter(people, function(arg){
+			return _.isEqual(arg.music,"rock");
+		});
+		var indieMus = _.filter(people, function(arg){
+			return _.isEqual(arg.music,"indie");
+		});
+		var technoMus = _.filter(people, function(arg){
+			return _.isEqual(arg.music,"techno");
+		});
+		var musicArrays = [countryMus,rockMus,indieMus,technoMus];
+		var mostPopMusic;
+		var mostPop = _.reduce(musicArrays,function(memo,arg){
+			if(memo.length > arg.length)
+				return memo;
+			return arg;
+		},countryMus);
+		mostPopMusic = mostPop[0].music;
+		$('#page').append('<p>Most Popular Music: ' + mostPopMusic + '</p>');
 
 
 		// 5. Use underscore to find the youngest person who likes 'techno' music
 		//		Log their name to the console.
+		youngestPerson = technoMus[0];
+		_.each(technoMus,function(arg){
+			if(youngestPerson.age > arg.age)
+				youngestPerson = arg;
+		});
+		console.log("youngest person: "+youngestPerson.firstName + ' '+youngestPerson.lastName);
 
 
 		// 6. Use underscore to find out how many people like country.
 		//		Log the amount to the console.
-
+		console.log('amount of poeple that like country: '+ countryMus.length);
 
 		// 7. Use underscore to create a new list of people. The list should contain
 		//		the same people in the original list, except for now, everybody likes
 		//		techno music. Log the result to the console.
-
-
+		_.each(people,function(arg){
+			arg.music = "techno";
+		});
+		console.log(people);
 		// 8. Use underscore to create a new list of people. The list should 
 		//		be based on the original list, except for now, everybody is twice
 		//		as old as they were before, and if they are older than 70, do not include 
 		//		them in the resulting list. Everything else remains the same.
+		var newPeople;
+		counter = 0;
+		_.each(people,function(arg){
+			arg.age*=2;
+			if(arg.age <= 70)
+				newPeople[counter] = arg;
+			counter++;
 
-
+		});
 		// 9. Use underscore to iterate through the list. Use underscore templating
 		//		to create a div for each person. In the div, add a paragraph for
 		//		all of the attributes except firstName and lastName. For firstName
